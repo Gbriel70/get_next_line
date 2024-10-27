@@ -1,7 +1,5 @@
 #include "get_next_line.h"
 
-#include "get_next_line.h"
-
 static char *line_buffer(int fd, char *left_str, char *buffer);
 
 char    *get_next_line(int fd)
