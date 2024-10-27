@@ -1,0 +1,11 @@
+Este é um teste de leitura de arquivo.
+A função get_next_line deve ler o conteúdo
+linha por linha, respeitando as quebras de linha.
+
+Ela também deve funcionar mesmo que o conteúdo
+seja lido em partes menores, usando buffers.
+
+Se você conseguir ler tudo isso corretamente,
+parabéns! Seu código está funcionando bem. 🎉
+
+Fim do teste.
