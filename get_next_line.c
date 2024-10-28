@@ -36,11 +36,9 @@ static char *line_buffer(int fd, char *left_str, char *buffer)
     char *tmp;
 
     buffer_read = 1;
-
     while(buffer_read > 0)
     {
         buffer_read = read(fd, buffer, BUFFER_SIZE);
-
         if (buffer_read == -1)
         {
             free(left_str);
@@ -48,24 +46,17 @@ static char *line_buffer(int fd, char *left_str, char *buffer)
         }
         else if(buffer_read == 0)
             break;
-        
-        buffer[buffer_read] = 0; //add \0
-
+        buffer[buffer_read] = '\0'; //add \0
         if(!left_str)
             left_str = dup_w("");
-
         tmp = left_str;
-
         left_str = str_join(tmp, buffer);
-
         free(tmp);
         tmp = NULL;
-
         if (str_chr(buffer, '\n'))
             break;
-        
-        return left_str;
     }
+	return left_str;
 }
 
 static char *set_line(char *line_buffer)
@@ -99,11 +90,11 @@ int main()
     }
     char *line;
 
-    /*while((line = get_next_line(fd) != NULL))
+    while((line = get_next_line(fd)) != NULL)
     {
         printf("%s", line);
         free(line);
-    }*/
+    }
     close(fd);
     return 0;
 }
