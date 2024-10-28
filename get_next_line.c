@@ -1,6 +1,7 @@
 #include "get_next_line.h"
 
 static char *line_buffer(int fd, char *left_str, char *buffer);
+static char *set_line(char *line_buffer);
 
 char    *get_next_line(int fd)
 {
@@ -31,29 +32,78 @@ char    *get_next_line(int fd)
 
 static char *line_buffer(int fd, char *left_str, char *buffer)
 {
+    ssize_t buffer_read;
+    char *tmp;
 
+    buffer_read = 1;
+
+    while(buffer_read > 0)
+    {
+        buffer_read = read(fd, buffer, BUFFER_SIZE);
+
+        if (buffer_read == -1)
+        {
+            free(left_str);
+            return NULL;
+        }
+        else if(buffer_read == 0)
+            break;
+        
+        buffer[buffer_read] = 0; //add \0
+
+        if(!left_str)
+            left_str = dup_w("");
+
+        tmp = left_str;
+
+        left_str = str_join(tmp, buffer);
+
+        free(tmp);
+        tmp = NULL;
+
+        if (str_chr(buffer, '\n'))
+            break;
+        
+        return left_str;
+    }
 }
 
-int main(int ac, char **av)
+static char *set_line(char *line_buffer)
 {
-    if (ac != 2)
-    {
-        fprintf(stderr, "uso: %s <teste.txt>\n", av[0]);
-        return 1;
-    }
+    char *lef_str;
+    size_t i;
 
-    int fd = open(av[1], O_RDONLY);
+    i = 0;
+
+    while(line_buffer[i] != '\n' && line_buffer[i] != '\0')
+        i++;
+    if (line_buffer[i] == 0 || line_buffer[1] == 0)
+        return NULL;
+    lef_str = ft_substr(line_buffer, i + 1, ft_strlen(line_buffer) - i);
+    if (*lef_str == 0)
+    {
+        free(lef_str);
+        lef_str = NULL;
+    }
+    line_buffer[i + 1] = 0;
+    return(lef_str);
+}
+
+
+int main()
+{
+    int fd = open("teste.txt", O_RDONLY);
     if (fd < 0)
     {
         return 1;
     }
     char *line;
 
-    while((line = get_next_line(fd) != NULL))
+    /*while((line = get_next_line(fd) != NULL))
     {
         printf("%s", line);
         free(line);
-    }
+    }*/
     close(fd);
     return 0;
 }

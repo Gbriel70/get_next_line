@@ -11,5 +11,11 @@
 #include <stdio.h>
 
 char *get_next_line(int fd);
+char *dup_w(char *str);
+char *str_join(char *src, char *dest);
+char str_chr(char *src, char c);
+size_t _strlen(char *str);
+char *_substr(char const *s, unsigned int start, size_t len);
+
 
 #endif
