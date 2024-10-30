@@ -6,7 +6,7 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:59 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/10/30 15:35:10 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/10/30 19:11:17 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,30 @@ static int next_line(t_line *str_cache)
 
 static void create_line(t_line *str_cache, char **line)
 {
+	int		line_size;
+	t_line	*tmp;
+	int		i;
 	
+	tmp = str_cache;
+	while (tmp)
+	{
+		line_size += tmp->lenght;
+		tmp = tmp->next;
+	}
+	if (!line_size)
+		return (NULL);
+	*line = malloc(sizeof(**line) * (line_size + 1));
+	if(!line)
+		return ;
+	line_size = 0;
+	i = 0;
+	while (str_cache && str_cache->content)
+	{
+		while (str_cache->content[i] && i < str_cache->lenght)
+			(*line)[line_size++] = str_cache->content[i++];
+		str_cache = str_cache->next;
+	}
+	(*line)[line_size] = '\0';
 }
 
 // int	main(void)
