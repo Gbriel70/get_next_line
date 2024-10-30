@@ -6,103 +6,94 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:59 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/10/28 11:50:33 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:35:10 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*line_buffer(int fd, char *left_str, char *buffer);
-static char	*set_line(char *line_buffer);
+static void read_line(t_line **str_cache, int fd);
+static int next_line(t_line *str_cache);
+static void create_line(t_line *str_cache, char **line);
 
-char	*get_next_line(int fd)
+char *get_next_line(int fd)
 {
-	static char	*left_str = NULL;
-	char		*buffer;
-	char		*line;
-
-	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
-	{
-		free(left_str);
-		free(buffer);
-		left_str = NULL;
-		buffer = NULL;
-		return (NULL);
-	}
-	if (!buffer)
-		return (NULL);
-	line = line_buffer(fd, left_str, buffer);
-	free(buffer);
-	if (!line)
-		return (NULL);
-	left_str = set_line(line);
-	return (line);
-}
-
-static char	*line_buffer(int fd, char *left_str, char *buffer)
-{
-	ssize_t	buffer_read;
-	char	*tmp;
-
-	buffer_read = 1;
-	while (buffer_read > 0)
-	{
-		buffer_read = read(fd, buffer, BUFFER_SIZE);
-		if (buffer_read == -1)
-		{
-			free(left_str);
-			return (NULL);
-		}
-		else if (buffer_read == 0)
-			break ;
-		buffer[buffer_read] = '\0';
-		if (!left_str)
-			left_str = dup_w("");
-		tmp = left_str;
-		left_str = str_join(tmp, buffer);
-		free(tmp);
-		tmp = NULL;
-		if (str_chr(buffer, '\n'))
-			break ;
-	}
-	return (left_str);
-}
-
-static char	*set_line(char *line_buffer)
-{
-	char	*lef_str;
-	size_t	i;
-
-	i = 0;
-	while (line_buffer[i] != '\n' && line_buffer[i] != '\0')
-		i++;
-	if (line_buffer[i] == 0 || line_buffer[1] == 0)
-		return (NULL);
-	lef_str = ft_substr(line_buffer, i + 1, ft_strlen(line_buffer) - i);
-	if (*lef_str == 0)
-	{
-		free(lef_str);
-		lef_str = NULL;
-	}
-	line_buffer[i + 1] = 0;
-	return (lef_str);
-}
-
-int	main(void)
-{
-	int fd = open("teste.txt", O_RDONLY);
-	if (fd < 0)
-	{
-		return (1);
-	}
+	static t_line *str_cache;
 	char *line;
+	
+	str_cache = NULL;
+	line = NULL;
+	if(fd == 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	read_line(&str_cache, fd);
+	if (!str_cache)
+		return (NULL);
+	create_line(str_cache, line);
+}
 
-	while ((line = get_next_line(fd)) != NULL)
+void read_line(t_line **str_cache, int fd)
+{
+	int		output_r;
+	char	*buffer_content;
+	t_line	*new_chunk;
+	
+	output_r = 0;
+	while (!next_line(str_cache))
 	{
-		printf("%s", line);
-		free(line);
+		buffer_content = 0;
+		new_chunk = ft_lstnew(buffer_content);
+		new_chunk->content = ft_calloc(sizeof(buffer_content), BUFFER_SIZE + 1);
+		output_r = read(fd, new_chunk->content, BUFFER_SIZE);
+		if (output_r == 0 || output_r == -1)
+		{
+			free(new_chunk->content);
+			free(new_chunk);
+			return ;
+		}
+		new_chunk->content[BUFFER_SIZE] = '\0';
+		ft_lstadd_back(str_cache, new_chunk);
 	}
-	close(fd);
+}
+
+static int next_line(t_line *str_cache)
+{
+	int	i;
+	
+	ft_lstlast(str_cache);
+	if (!str_cache || !str_cache->content)
+		return (0);
+	i = 0;
+	while (str_cache->content[i] != '\0')
+	{
+		if (str_cache->content[i] == '\n')
+		{
+			str_cache->lenght = i++;
+			return (1);
+		}
+		i++;
+	}
 	return (0);
 }
+
+static void create_line(t_line *str_cache, char **line)
+{
+	
+}
+
+// int	main(void)
+// {
+// 	int fd = open("teste.txt", O_RDONLY);
+// 	if (fd < 0)
+// 	{
+// 		return (1);
+// 	}
+// 	char *line;
+
+// 	while ((line = get_next_line(fd)) != NULL)
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 	}
+// 	close(fd);
+// 	return (0);
+// }

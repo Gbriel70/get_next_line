@@ -6,95 +6,99 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:48:02 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/10/28 11:49:45 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:10:05 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+void	*ft_calloc(size_t num, size_t size)
 {
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		i++;
-	}
-	return (i);
-}
-
-char	*dup_w(char *str)
-{
-	char	*copy;
-	char	*i;
-
-	copy = (char *)malloc(ft_strlen(str) + 1);
-	if (!copy)
-		return (NULL);
-	i = copy;
-	while (*str)
-	{
-		*(i++) = *(str++);
-	}
-	*i = '\0';
-	return (copy);
-}
-
-char	*str_join(char *src, char *dest)
-{
-	char	*join;
-	char	*result;
-	size_t	total_size;
-
-	total_size = ft_strlen(src) + ft_strlen(dest);
-	join = (char *)malloc(total_size + 1);
-	result = join;
-	while (*src)
-	{
-		*join++ = *src++;
-	}
-	while (*dest)
-	{
-		*join++ = *dest++;
-	}
-	*join = '\0';
-	return (result);
-}
-
-char	*str_chr(char *src, int c)
-{
-	while (*src)
-	{
-		if (*src == (char)c)
-			return ((char *)(src + 1));
-		src++;
-	}
-	if ((char)c == '\0')
-		return ((char *)(src + 1));
-	return (NULL);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char	*substr;
-	size_t	i;
-	size_t	size_s;
-
-	size_s = ft_strlen(s);
-	if (start >= size_s)
-		return (dup_w(""));
-	if (len > size_s - start)
-		len = size_s - start;
-	substr = (char *)malloc(sizeof(char) * (len + 1));
-	if (!substr)
+	void	*list;
+	size_t	calloc_size;
+	unsigned char *zero_list;
+	size_t i;
+	
+	if (num != 0 && size > SIZE_MAX / num)
+		return NULL;
+	calloc_size = num * size;
+	list = malloc(calloc_size);
+	if (!list)
 		return (NULL);
 	i = 0;
-	while (i < len)
+	zero_list = list;
+	while (i < calloc_size)
 	{
-		substr[i] = s[start + i];
+		zero_list[i] = '\0';
 		i++;
 	}
-	substr[i] = '\0';
-	return (substr);
+	return(zero_list);
 }
+
+t_line	*ft_lstnew(char *content)
+{
+	t_line *new;
+
+	new = malloc(sizeof(t_line));
+	if(!new)
+		return NULL;
+	new->content = content;
+	new->lenght = 0;
+	new->next = NULL;
+	return (new);
+}
+
+t_line	*ft_lstlast(t_line *lst)
+{
+	if(!lst)
+		NULL;
+	while (lst->next)
+	{
+		lst = lst->next;
+	}
+	return (lst);
+}
+
+void	ft_lstadd_back(t_line **lst, t_line *new)
+{
+	t_line *aux;
+
+	if (!new)
+		return ;
+	if (!lst)
+		*lst = new;
+		return ;
+	aux = *lst;
+	while (aux->next)
+	{
+		aux = aux->next;
+	}
+	aux->next = new;
+}
+
+void	ft_lstclear(t_line **lst, void (*del)(void *))
+{
+	t_line *temp_lst;
+
+	if (!lst || !del)
+		return ;
+	while (*lst)
+	{
+		temp_lst = lst;
+		*lst = (*lst)->next;
+		free(temp_lst->content);
+		free(temp_lst);
+	}
+	*lst = NULL;
+}
+
+// int main()
+// {
+// 	char *teste = "teste";
+// 	t_line *novo_no = ft_lstnew(teste);
+	
+// 	printf("%s\n", novo_no->content);
+// 	printf("%p\n", (void *)novo_no->lenght);
+// 	printf("%p", (void *)novo_no->next);
+// 	return 0;
+// }
