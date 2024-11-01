@@ -6,7 +6,7 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:59 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/11/01 18:18:05 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/11/01 18:49:20 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int next_line(t_line *str_cache)
 	{
 		if (str_cache->content[i] == '\n')
 		{
-			str_cache->lenght = ++i;
+			str_cache->lenght = (i + 1);
 			return (1);
 		}
 		i++;
