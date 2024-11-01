@@ -6,7 +6,7 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:48:02 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/11/01 14:41:54 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/11/01 14:56:55 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_line	*ft_lstnew(char *content)
 {
 	t_line *new;
 
-	new = malloc(sizeof(t_line));
+	new = malloc(sizeof(*new));
 	if(!new)
 		return NULL;
 	new->content = content;
@@ -51,7 +51,7 @@ t_line	*ft_lstnew(char *content)
 t_line	*ft_lstlast(t_line *lst)
 {
 	if(!lst)
-		NULL;
+		return NULL;
 	while (lst->next)
 	{
 		lst = lst->next;
@@ -65,16 +65,13 @@ void	ft_lstadd_back(t_line **lst, t_line *new)
 
 	if (!new)
 		return ;
-	if (!lst)
+	if (!*lst)
 	{
 		*lst = new;
 		return ;
 	}
 	aux = *lst;
-	while (aux->next)
-	{
-		aux = aux->next;
-	}
+	aux = ft_lstlast(*lst);
 	aux->next = new;
 }
 
@@ -94,13 +91,13 @@ void	ft_lstclear(t_line **lst, void (*del)(void *))
 	*lst = NULL;
 }
 
-// int main()
-// {
-// 	char *teste = "teste";
-// 	t_line *novo_no = ft_lstnew(teste);
+int main()
+{
+	char *teste = "teste";
+	t_line *novo_no = ft_lstnew(teste);
 	
-// 	printf("%s\n", novo_no->content);
-// 	printf("%p\n", (void *)novo_no->lenght);
-// 	printf("%p", (void *)novo_no->next);
-// 	return 0;
-// }
+	printf("%s\n", novo_no->content);
+	printf("%p\n", (void *)novo_no->lenght);
+	printf("%p", (void *)novo_no->next);
+	return 0;
+}
