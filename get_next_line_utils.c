@@ -6,7 +6,7 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:48:02 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/11/01 14:56:55 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/11/01 14:58:08 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,13 @@ void	ft_lstclear(t_line **lst, void (*del)(void *))
 	*lst = NULL;
 }
 
-int main()
-{
-	char *teste = "teste";
-	t_line *novo_no = ft_lstnew(teste);
+// int main()
+// {
+// 	char *teste = "teste";
+// 	t_line *novo_no = ft_lstnew(teste);
 	
-	printf("%s\n", novo_no->content);
-	printf("%p\n", (void *)novo_no->lenght);
-	printf("%p", (void *)novo_no->next);
-	return 0;
-}
+// 	printf("%s\n", novo_no->content);
+// 	printf("%p\n", (void *)novo_no->lenght);
+// 	printf("%p", (void *)novo_no->next);
+// 	return 0;
+// }
