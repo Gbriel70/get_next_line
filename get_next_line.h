@@ -6,7 +6,7 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:47:54 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/10/30 11:47:19 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/11/01 16:58:10 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 1042
 # endif
 
 # include <fcntl.h>
@@ -26,7 +26,7 @@
 typedef struct s_line
 {
 	char	*content;
-	size_t		lenght;
+	int		lenght;
 	struct	s_line	*next;
 }	t_line;
 
