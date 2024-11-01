@@ -6,7 +6,7 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:48:02 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/10/30 12:10:05 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/11/01 14:41:54 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,10 @@ void	ft_lstadd_back(t_line **lst, t_line *new)
 	if (!new)
 		return ;
 	if (!lst)
+	{
 		*lst = new;
 		return ;
+	}
 	aux = *lst;
 	while (aux->next)
 	{
@@ -84,7 +86,7 @@ void	ft_lstclear(t_line **lst, void (*del)(void *))
 		return ;
 	while (*lst)
 	{
-		temp_lst = lst;
+		temp_lst = *lst;
 		*lst = (*lst)->next;
 		free(temp_lst->content);
 		free(temp_lst);

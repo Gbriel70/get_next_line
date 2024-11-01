@@ -6,7 +6,7 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:59 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/10/30 19:11:17 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/11/01 14:40:25 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void read_line(t_line **str_cache, int fd);
 static int next_line(t_line *str_cache);
 static void create_line(t_line *str_cache, char **line);
+static void refact_line(t_line **str_cache);
 
 char *get_next_line(int fd)
 {
@@ -28,7 +29,9 @@ char *get_next_line(int fd)
 	read_line(&str_cache, fd);
 	if (!str_cache)
 		return (NULL);
-	create_line(str_cache, line);
+	create_line(str_cache, &line);
+	refact_line(&str_cache);
+	return (line);
 }
 
 void read_line(t_line **str_cache, int fd)
@@ -38,7 +41,7 @@ void read_line(t_line **str_cache, int fd)
 	t_line	*new_chunk;
 	
 	output_r = 0;
-	while (!next_line(str_cache))
+	while (!next_line(*str_cache))
 	{
 		buffer_content = 0;
 		new_chunk = ft_lstnew(buffer_content);
@@ -79,8 +82,9 @@ static void create_line(t_line *str_cache, char **line)
 {
 	int		line_size;
 	t_line	*tmp;
-	int		i;
+	size_t		i;
 	
+	line_size = 0;
 	tmp = str_cache;
 	while (tmp)
 	{
@@ -88,7 +92,7 @@ static void create_line(t_line *str_cache, char **line)
 		tmp = tmp->next;
 	}
 	if (!line_size)
-		return (NULL);
+		return ;
 	*line = malloc(sizeof(**line) * (line_size + 1));
 	if(!line)
 		return ;
@@ -101,6 +105,35 @@ static void create_line(t_line *str_cache, char **line)
 		str_cache = str_cache->next;
 	}
 	(*line)[line_size] = '\0';
+}
+
+void refact_line(t_line **str_cache)
+{
+	t_line *tmp;
+	t_line *new_node;
+	char *content;
+	size_t size;
+	size_t i;
+	
+	size = 0;
+	tmp = ft_lstlast(*str_cache);
+	if (!tmp)
+		return ;
+	content = tmp->content;
+	size = tmp->lenght;
+	tmp->content = NULL;
+	ft_lstclear(str_cache, free);
+	i = 0;
+	if (content[size] != '\0')
+	{
+		while (content[size] != '\0')
+			content[i++] = content[size++];
+		content[i] = '\0';
+		new_node = ft_lstnew(content);
+		ft_lstadd_back(str_cache, new_node);
+	}
+	else
+		free(content);	
 }
 
 // int	main(void)
