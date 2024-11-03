@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: gbriel <gbriel@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 11:46:59 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/11/03 17:44:32 by gbriel           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 
 static void read_line(t_line **str_cache, int fd);
@@ -19,17 +7,17 @@ static void refact_line(t_line **str_cache);
 
 char *get_next_line(int fd)
 {
-	static t_line *str_cache = NULL;
+	static t_line *str_cache[MAX_FD];
 	char *line;
 	
 	line = NULL;
-	if(fd < 0 || BUFFER_SIZE <= 0)
+	if(fd < 0 || fd > MAX_FD || BUFFER_SIZE <= 0)
 		return (NULL);
-	read_line(&str_cache, fd);
-	if (!str_cache)
+	read_line(&str_cache[fd], fd);
+	if (!str_cache[fd])
 		return (NULL);
-	create_line(str_cache, &line);
-	refact_line(&str_cache);
+	create_line(str_cache[fd], &line);
+	refact_line(&str_cache[fd]);
 	return (line);
 }
 
@@ -135,21 +123,3 @@ void refact_line(t_line **str_cache)
 	else
 		free(content);	
 }
-
-// int	main(void)
-// {
-// 	int fd = open("teste.txt", O_RDONLY);
-// 	if (fd < 0)
-// 	{
-// 		return (1);
-// 	}
-// 	char *line;
-
-// 	while ((line = get_next_line(fd)) != NULL)
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// 	close(fd);
-// 	return (0);
-// }

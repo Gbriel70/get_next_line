@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gbriel <gbriel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:47:54 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/11/01 16:58:10 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/11/03 19:48:06 by gbriel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1042
+# endif
+
+# ifndef MAX_FD
+# define MAX_FD 1024
 # endif
 
 # include <fcntl.h>
