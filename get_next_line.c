@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbriel <gbriel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:59 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/11/03 17:44:32 by gbriel           ###   ########.fr       */
+/*   Updated: 2024/11/04 11:50:53 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static void read_line(t_line **str_cache, int fd);
-static int next_line(t_line *str_cache);
-static void create_line(t_line *str_cache, char **line);
-static void refact_line(t_line **str_cache);
+static void	read_line(t_line **str_cache, int fd);
+static int	next_line(t_line *str_cache);
+static void	create_line(t_line *str_cache, char **line);
+static void	refact_line(t_line **str_cache);
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-	static t_line *str_cache = NULL;
-	char *line;
-	
+	static t_line	*str_cache = NULL;
+	char			*line;
+
 	line = NULL;
-	if(fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	read_line(&str_cache, fd);
 	if (!str_cache)
@@ -33,18 +33,21 @@ char *get_next_line(int fd)
 	return (line);
 }
 
-void read_line(t_line **str_cache, int fd)
+static void	read_line(t_line **str_cache, int fd)
 {
 	int		output_r;
 	char	*buffer_content;
 	t_line	*new_chunk;
-	
+
 	output_r = 0;
 	while (!next_line(*str_cache))
 	{
 		buffer_content = NULL;
 		new_chunk = ft_lstnew(buffer_content);
-		new_chunk->content = ft_calloc(sizeof(*buffer_content), BUFFER_SIZE + 1);
+		new_chunk->content = ft_calloc(sizeof(*buffer_content), BUFFER_SIZE
+				+ 1);
+		if (!new_chunk->content)
+			return ;
 		output_r = read(fd, new_chunk->content, BUFFER_SIZE);
 		if (output_r == 0 || output_r == -1)
 		{
@@ -57,10 +60,10 @@ void read_line(t_line **str_cache, int fd)
 	}
 }
 
-static int next_line(t_line *str_cache)
+static int	next_line(t_line *str_cache)
 {
 	int	i;
-	
+
 	str_cache = ft_lstlast(str_cache);
 	if (!str_cache)
 		return (0);
@@ -78,12 +81,12 @@ static int next_line(t_line *str_cache)
 	return (0);
 }
 
-static void create_line(t_line *str_cache, char **line)
+static void	create_line(t_line *str_cache, char **line)
 {
 	int		line_size;
 	t_line	*tmp;
 	int		i;
-	
+
 	line_size = 0;
 	tmp = str_cache;
 	while (tmp)
@@ -94,7 +97,7 @@ static void create_line(t_line *str_cache, char **line)
 	if (!line_size)
 		return ;
 	*line = malloc(sizeof(**line) * (line_size + 1));
-	if(!line)
+	if (!line)
 		return ;
 	line_size = 0;
 	while (str_cache && str_cache->content)
@@ -107,14 +110,14 @@ static void create_line(t_line *str_cache, char **line)
 	(*line)[line_size] = '\0';
 }
 
-void refact_line(t_line **str_cache)
+static void	refact_line(t_line **str_cache)
 {
-	t_line *tmp;
-	t_line *new_node;
-	char *content;
-	int size;
-	int i;
-	
+	t_line	*tmp;
+	t_line	*new_node;
+	char	*content;
+	int		size;
+	int		i;
+
 	size = 0;
 	tmp = ft_lstlast(*str_cache);
 	if (!tmp)
@@ -133,7 +136,7 @@ void refact_line(t_line **str_cache)
 		ft_lstadd_back(str_cache, new_node);
 	}
 	else
-		free(content);	
+		free(content);
 }
 
 // int	main(void)

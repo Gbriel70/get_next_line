@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbriel <gbriel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:47:54 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/11/03 19:48:06 by gbriel           ###   ########.fr       */
+/*   Updated: 2024/11/04 11:50:20 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1042
-# endif
-
-# ifndef MAX_FD
-# define MAX_FD 1024
+#  define BUFFER_SIZE 42
 # endif
 
 # include <fcntl.h>
@@ -29,9 +25,9 @@
 
 typedef struct s_line
 {
-	char	*content;
-	int		lenght;
-	struct	s_line	*next;
+	char			*content;
+	int				lenght;
+	struct s_line	*next;
 }	t_line;
 
 char	*get_next_line(int fd);

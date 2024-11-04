@@ -6,7 +6,7 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:48:02 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/11/01 14:58:08 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/11/04 11:48:38 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	*ft_calloc(size_t num, size_t size)
 {
-	void	*list;
-	size_t	calloc_size;
-	unsigned char *zero_list;
-	size_t i;
-	
+	void			*list;
+	size_t			calloc_size;
+	unsigned char	*zero_list;
+	size_t			i;
+
 	if (num != 0 && size > SIZE_MAX / num)
-		return NULL;
+		return (NULL);
 	calloc_size = num * size;
 	list = malloc(calloc_size);
 	if (!list)
@@ -32,16 +32,16 @@ void	*ft_calloc(size_t num, size_t size)
 		zero_list[i] = '\0';
 		i++;
 	}
-	return(zero_list);
+	return (zero_list);
 }
 
 t_line	*ft_lstnew(char *content)
 {
-	t_line *new;
+	t_line	*new;
 
 	new = malloc(sizeof(*new));
-	if(!new)
-		return NULL;
+	if (!new)
+		return (NULL);
 	new->content = content;
 	new->lenght = 0;
 	new->next = NULL;
@@ -50,8 +50,8 @@ t_line	*ft_lstnew(char *content)
 
 t_line	*ft_lstlast(t_line *lst)
 {
-	if(!lst)
-		return NULL;
+	if (!lst)
+		return (NULL);
 	while (lst->next)
 	{
 		lst = lst->next;
@@ -61,7 +61,7 @@ t_line	*ft_lstlast(t_line *lst)
 
 void	ft_lstadd_back(t_line **lst, t_line *new)
 {
-	t_line *aux;
+	t_line	*aux;
 
 	if (!new)
 		return ;
@@ -77,7 +77,7 @@ void	ft_lstadd_back(t_line **lst, t_line *new)
 
 void	ft_lstclear(t_line **lst, void (*del)(void *))
 {
-	t_line *temp_lst;
+	t_line	*temp_lst;
 
 	if (!lst || !del)
 		return ;
@@ -95,9 +95,9 @@ void	ft_lstclear(t_line **lst, void (*del)(void *))
 // {
 // 	char *teste = "teste";
 // 	t_line *novo_no = ft_lstnew(teste);
-	
+
 // 	printf("%s\n", novo_no->content);
 // 	printf("%p\n", (void *)novo_no->lenght);
 // 	printf("%p", (void *)novo_no->next);
-// 	return 0;
+// 	return (0);
 // }
