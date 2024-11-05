@@ -6,7 +6,7 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:59 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/11/04 11:50:53 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:04:01 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,12 @@ static void	read_line(t_line **str_cache, int fd)
 		if (!new_chunk->content)
 			return ;
 		output_r = read(fd, new_chunk->content, BUFFER_SIZE);
-		if (output_r == 0 || output_r == -1)
+		if (output_r <= 0)
 		{
 			free(new_chunk->content);
 			free(new_chunk);
+			if (output_r == -1)
+				ft_lstclear(str_cache, free);
 			return ;
 		}
 		new_chunk->content[BUFFER_SIZE] = '\0';
@@ -126,9 +128,9 @@ static void	refact_line(t_line **str_cache)
 	size = tmp->lenght;
 	tmp->content = NULL;
 	ft_lstclear(str_cache, free);
-	i = 0;
 	if (content[size] != '\0')
 	{
+		i = 0;
 		while (content[size] != '\0')
 			content[i++] = content[size++];
 		content[i] = '\0';
@@ -141,7 +143,7 @@ static void	refact_line(t_line **str_cache)
 
 // int	main(void)
 // {
-// 	int fd = open("teste.txt", O_RDONLY);
+// 	int fd = open("teste.txt",O_RDONLY);
 // 	if (fd < 0)
 // 	{
 // 		return (1);

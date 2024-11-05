@@ -6,7 +6,7 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:29:51 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/11/04 13:12:09 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:02:15 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ static void	read_line(t_line **str_cache, int fd)
 		new_chunk->content = ft_calloc(sizeof(*buffer_content), BUFFER_SIZE
 				+ 1);
 		output_r = read(fd, new_chunk->content, BUFFER_SIZE);
-		if (output_r == 0 || output_r == -1)
+		if (output_r <= 0)
 		{
 			free(new_chunk->content);
 			free(new_chunk);
+			if (output_r == -1)
+				ft_lstclear(str_cache, free);
 			return ;
 		}
 		new_chunk->content[BUFFER_SIZE] = '\0';

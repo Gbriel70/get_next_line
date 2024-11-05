@@ -6,7 +6,7 @@
 /*   By: gcosta-m <gcosta-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:30:06 by gcosta-m          #+#    #+#             */
-/*   Updated: 2024/11/04 11:49:37 by gcosta-m         ###   ########.fr       */
+/*   Updated: 2024/11/05 11:59:12 by gcosta-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,3 +90,21 @@ void	ft_lstclear(t_line **lst, void (*del)(void *))
 	}
 	*lst = NULL;
 }
+
+// int	main(void)
+// {
+// 	int fd = open("teste.txt", O_RDONLY);
+// 	if (fd < 0)
+// 	{
+// 		return (1);
+// 	}
+// 	char *line;
+
+// 	while ((line = get_next_line(fd)) != NULL)
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 	}
+// 	close(fd);
+// 	return (0);
+// }
